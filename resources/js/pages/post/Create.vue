@@ -43,31 +43,47 @@ const submit = () => {
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="my-12 mx-auto w-full max-w-2xl">
-           <form @submit.prevent="submit">  
+            <form @submit.prevent="submit">
                 <Card>
                     <CardHeader>
-                    <CardTitle>Create post</CardTitle>
-                    <CardDescription>Create a new blog post</CardDescription>
+                        <CardTitle>
+                            <span class="text-2xl font-bold text-gray-800">Create Post</span>
+                        </CardTitle>
+                        <CardDescription>
+                            <span class="text-gray-500">Fill in the details below to create a new blog post.</span>
+                        </CardDescription>
                     </CardHeader>
-                    <CardContent class="flex flex-col gap-4">
-                    <div>
-                        <Label>Title</Label>
-                        <Input v-model="form.title"> </Input>
-                        <InputError :message="form.errors.title" />
-                    </div>
+                    <CardContent class="flex flex-col gap-6">
                         <div>
-                            <label>Description</label>
-                            <Textarea v-model="form.description"> </Textarea>
-                             <InputError :message="form.errors.description" />
+                            <Label class="block mb-1 text-sm font-medium text-gray-700">Title</Label>
+                            <Input
+                                v-model="form.title"
+                                class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter post title"
+                            />
+                            <InputError :message="form.errors.title" class="mt-1" />
+                        </div>
+                        <div>
+                            <Label class="block mb-1 text-sm font-medium text-gray-700">Description</Label>
+                            <Textarea
+                                v-model="form.description"
+                                class="w-full px-4 py-2 border rounded min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Write your post description..."
+                            />
+                            <InputError :message="form.errors.description" class="mt-1" />
                         </div>
                     </CardContent>
-                    <CardFooter>
-                    <Button type="submit"> Submit</Button>
+                    <CardFooter class="flex justify-end">
+                        <Button
+                            type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                            :disabled="form.processing"
+                        >
+                            {{ form.processing ? 'Submitting...' : 'Submit' }}
+                        </Button>
                     </CardFooter>
                 </Card>
             </form>
-            <!-- <pre>{{ form }}</pre> -->
         </div>
     </AppLayout>
-    
 </template>

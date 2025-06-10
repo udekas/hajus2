@@ -48,43 +48,56 @@ const minutesAgo = (dateStr: string): string => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="my-12 mx-auto w-full max-w-2xl space-y-6">
+        <div class="my-12 mx-auto w-full max-w-2xl space-y-8">
             <!-- Post details -->
-            <div>
-                <h1 class="text-2xl font-semibold">{{ post.title }}</h1>
-                <p class="mt-2">{{ post.description }}</p>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h1 class="text-3xl font-bold text-gray-800">{{ post.title }}</h1>
+                <p class="mt-3 text-gray-600">{{ post.description }}</p>
             </div>
 
             <!-- Comment form -->
-            <form @submit.prevent="submit">
+            <form @submit.prevent="submit" class="bg-white rounded-lg shadow p-6">
                 <div class="relative">
-                    <Textarea v-model="form.content" class="w-full h-full" placeholder="Lisa kommentaar..." />
-
-                    <Button class="absolute bottom-4 right-4 z-10">Postita</Button>
+                    <Textarea
+                        v-model="form.content"
+                        class="w-full h-24 resize-none border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-100 rounded-lg px-4 py-3 text-gray-800"
+                        placeholder="Lisa kommentaar..."
+                    />
+                    <div class="flex justify-end mt-3">
+                        <Button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition">
+                            Postita
+                        </Button>
+                    </div>
                 </div>
             </form>
 
             <!-- Comments -->
-            <div>
-                <h2 class="text-lg font-semibold mb-2">Kommentaarid</h2>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Kommentaarid</h2>
                 <ul>
                     <li
                         v-for="comment in [...post.comments]"
                         :key="comment.id"
-                        class="border-b py-3 flex justify-between items-start"
+                        class="border-b last:border-b-0 py-4 flex justify-between items-start gap-4"
                     >
-                        <div>
-                            <p class="text-sm text-gray-600 font-semibold">{{ comment.user.name }}</p>
-                            <p class="mb-1">{{ comment.body }}</p>
-                            <p class="text-xs text-gray-500">{{ minutesAgo(comment.created_at) }}</p>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-sm font-semibold text-blue-700">{{ comment.user.name }}</span>
+                                <span class="text-xs text-gray-400">• {{ minutesAgo(comment.created_at) }}</span>
+                            </div>
+                            <p class="text-gray-700 mb-1">{{ comment.body }}</p>
                         </div>
                         <button
                             v-if="canDelete(comment)"
                             @click="deleteComment(comment.id)"
-                            class="text-red-500 text-xs hover:underline"
+                            class="text-red-500 text-xs font-medium hover:underline transition"
+                            title="Kustuta kommentaar"
                         >
                             Kustuta
                         </button>
+                    </li>
+                    <li v-if="!post.comments.length" class="text-gray-400 text-center py-6">
+                        Kommentaare veel pole.
                     </li>
                 </ul>
             </div>

@@ -12,7 +12,7 @@ import RadarMap from 'radar-sdk-js/dist/ui/RadarMap';
 import { onMounted, ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
+    { title: 'Töölaud', href: '/dashboard' },
 ];
 
 const props = defineProps({
@@ -111,60 +111,114 @@ function reallyDeleteMarker() {
 <template>
   <Head title="Dashboard" />
   <AppLayout :breadcrumbs="breadcrumbs">
-    <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+    <div class="flex flex-col gap-6 rounded-xl p-6 bg-gradient-to-br from-[#1a120b] via-[#2d1b12] to-[#3e2723] min-h-screen">
       
-      <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader class="flex h-16  flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle class="text-sm font-medium">Weather</CardTitle>
-            <img :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'" alt="Weather icon" class="bg-white rounded-lg h-12 w-12" />
+      <!-- Weather Card -->
+      <div class="grid gap-6 md:grid-cols-3">
+        <Card class="bg-gradient-to-br from-[#3e2723] to-[#4e342e] text-white shadow-lg border-none">
+          <CardHeader class="flex flex-row items-center justify-between pb-2">
+            <CardTitle class="text-base font-semibold tracking-wide">Weather</CardTitle>
+            <img
+              :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'"
+              alt="Weather icon"
+              class="bg-white rounded-lg h-14 w-14 shadow"
+            />
           </CardHeader>
           <CardContent>
-            <div class="text-2xl font-bold">{{ weather.main.temp }}°C</div>
-            <p class="text-xs text-muted-foreground">{{ weather.wind.speed }} m/s ({{ weather.weather[0].description }})</p>
+            <div class="text-3xl font-extrabold mb-1">{{ weather.main.temp }}°C</div>
+            <p class="text-xs text-gray-300 italic">
+              {{ weather.wind.speed }} m/s &mdash; {{ weather.weather[0].description }}
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      <div class="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-        <div id="map" style="width: 100%; height: 100%" />
+      <!-- Map Section -->
+      <div class="relative flex-1 min-h-[60vh] overflow-hidden rounded-xl border border-[#4e342e] shadow-lg">
+        <div id="map" class="w-full h-full" />
       </div>
 
+      <!-- Marker Dialog -->
       <Dialog :open="show" @update:open="show = $event">
-        <DialogContent>
+        <DialogContent class="bg-gradient-to-br from-[#3e2723] to-[#4e342e] text-white rounded-xl shadow-xl border-none">
           <DialogHeader>
-            <DialogTitle>{{ selectedMarker ? 'Muuda markerit' : 'Uus marker' }}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle class="text-lg font-bold">
+              {{ selectedMarker ? 'Muuda markerit' : 'Uus marker' }}
+            </DialogTitle>
+            <DialogDescription class="text-sm text-gray-300">
               {{ selectedMarker ? 'Redigeeri olemasolevat markerit' : 'Lisa uus marker kaardilt klikkides' }}
             </DialogDescription>
           </DialogHeader>
-          <form class="space-y-4" @submit.prevent="handleSubmit">
+          <form class="space-y-5 mt-4" @submit.prevent="handleSubmit">
             <div>
-              <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-              <input id="title" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" v-model="form.title" />
+              <label for="title" class="block text-sm font-medium mb-1">Title</label>
+              <input
+                id="title"
+                type="text"
+                class="w-full rounded-md border border-[#4e342e] bg-[#1a120b] text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6d4c41] transition"
+                v-model="form.title"
+                autocomplete="off"
+              />
             </div>
             <div>
-              <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-              <textarea id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" v-model="form.description" />
+              <label for="description" class="block text-sm font-medium mb-1">Description</label>
+              <textarea
+                id="description"
+                rows="3"
+                class="w-full rounded-md border border-[#4e342e] bg-[#1a120b] text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6d4c41] transition"
+                v-model="form.description"
+              />
             </div>
-            <div class="flex gap-4 mt-4">
-              <button v-if="selectedMarker" type="button" @click="updateMarker" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Salvesta muudatused</button>
-              <button v-if="selectedMarker" type="button" @click="confirmDeleteMarker" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Kustuta marker</button>
-              <input v-if="!selectedMarker" type="submit" value="Salvesta uus" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" />
+            <div class="flex gap-4 mt-6 justify-end">
+              <button
+                v-if="selectedMarker"
+                type="button"
+                @click="updateMarker"
+                class="px-5 py-2 rounded-lg bg-[#6d4c41] hover:bg-[#4e342e] transition text-white font-semibold shadow"
+              >
+                Salvesta muudatused
+              </button>
+              <button
+                v-if="selectedMarker"
+                type="button"
+                @click="confirmDeleteMarker"
+                class="px-5 py-2 rounded-lg bg-red-700 hover:bg-red-900 transition text-white font-semibold shadow"
+              >
+                Kustuta marker
+              </button>
+              <input
+                v-if="!selectedMarker"
+                type="submit"
+                value="Salvesta uus"
+                class="px-5 py-2 rounded-lg bg-[#3e2723] hover:bg-[#4e342e] transition text-white font-semibold shadow cursor-pointer"
+              />
             </div>
           </form>
         </DialogContent>
       </Dialog>
 
+      <!-- Delete Confirmation Dialog -->
       <Dialog :open="confirmDelete" @update:open="confirmDelete = $event">
-        <DialogContent>
+        <DialogContent class="bg-gradient-to-br from-[#3e2723] to-[#4e342e] text-white rounded-xl shadow-xl border-none">
           <DialogHeader>
-            <DialogTitle>Kustuta marker</DialogTitle>
-            <DialogDescription>Oled kindel, et soovid selle markeri kustutada?</DialogDescription>
+            <DialogTitle class="text-lg font-bold">Kustuta marker</DialogTitle>
+            <DialogDescription class="text-sm text-gray-300">
+              Oled kindel, et soovid selle markeri kustutada?
+            </DialogDescription>
           </DialogHeader>
-          <div class="flex justify-end gap-4 mt-4">
-            <button @click="confirmDelete = false" class="px-4 py-2 rounded bg-gray-300">Tühista</button>
-            <button @click="reallyDeleteMarker" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Kustuta</button>
+          <div class="flex justify-end gap-4 mt-6">
+            <button
+              @click="confirmDelete = false"
+              class="px-5 py-2 rounded-lg bg-[#1a120b] hover:bg-[#3e2723] transition text-white font-semibold shadow"
+            >
+              Tühista
+            </button>
+            <button
+              @click="reallyDeleteMarker"
+              class="px-5 py-2 rounded-lg bg-red-700 hover:bg-red-900 transition text-white font-semibold shadow"
+            >
+              Kustuta
+            </button>
           </div>
         </DialogContent>
       </Dialog>

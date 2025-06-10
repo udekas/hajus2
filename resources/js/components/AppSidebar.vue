@@ -10,26 +10,26 @@ import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Töölaud',
         href: '/dashboard',
         icon: LayoutGrid,
     },
     
     {
-        title: 'Posts',
+        title: 'Blogi postitused',
         href: '/posts',
         icon: Signpost,
     },
     
 
     {
-        title: 'Products',
+        title: 'Tooted',
         href: '/products',
         icon: Box,
     },
 
     {
-        title: 'Movies',
+        title: 'Filmid',
         href: '/movies',
         icon: Film,
     },

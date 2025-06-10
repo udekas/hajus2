@@ -48,55 +48,62 @@ const clear = () => {
 
 <template>
   <AppLayout>
-    <div class="flex justify-end p-4 gap-4">
-        <Link
-        
+    <!-- Header Bar -->
+    <div class="flex justify-end items-center p-6 gap-4 bg-white shadow rounded-xl mb-8">
+      <Link
         :href="route('cart.checkout')"
         size="icon"
         variant="outline"
-        class="relative rounded-full border border-gray-300 p-2 hover:bg-gray-100 transition"
+        class="relative rounded-full border border-gray-300 p-3 hover:bg-blue-50 transition"
+        aria-label="Go to cart"
       >
-        <ShoppingCart class="w-5 h-5 text-gray-700" />
-
-        <!-- Badge / item count (future support) -->
+        <ShoppingCart class="w-6 h-6 text-blue-700" />
         <span
-          class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full"
+          v-if="$page.props.cartCount > 0"
+          class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow"
         >
           {{ $page.props.cartCount }}
         </span>
       </Link>
-
-      <Button @click="clear" size="icon" variant="destructive" class="relative" >
-        <Trash class="size-5"></Trash>
-
+      <Button
+        @click="clear"
+        size="icon"
+        variant="destructive"
+        class="relative rounded-full p-3 hover:bg-red-100 transition"
+        aria-label="Clear cart"
+      >
+        <Trash class="w-6 h-6" />
       </Button>
-      </div>
+    </div>
 
-      
-    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        
-      <Card v-for="product in props.products" :key="product.id" class="h-full flex flex-col">
-        <CardHeader class="p-4 pb-2">
+    <!-- Products Grid -->
+    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <Card
+        v-for="product in props.products"
+        :key="product.id"
+        class="h-full flex flex-col shadow-lg hover:shadow-2xl transition rounded-2xl bg-white"
+      >
+        <CardHeader class="p-4 pb-2 flex flex-col items-center">
           <img
             :src="product.image"
             alt="product image"
-            class="w-full h-48 object-cover rounded-xl mb-4"
+            class="w-full h-48 object-cover rounded-xl mb-4 border border-gray-100 shadow-sm"
           />
-          <CardTitle class="text-xl font-bold text-gray-800 mb-1">
+          <CardTitle class="text-xl font-bold text-gray-800 mb-1 text-center">
             {{ product.name }}
           </CardTitle>
-          <CardDescription class="text-gray-600 text-sm mb-2">
+          <CardDescription class="text-gray-500 text-sm mb-2 text-center">
             {{ product.description }}
           </CardDescription>
-          <p class="text-lg font-semibold text-blue-700 mb-2">
-            €{{ formatCurrency(product.price) }}
+          <p class="text-lg font-semibold text-blue-700 mb-2 text-center">
+            {{ formatCurrency(product.price) }}
           </p>
         </CardHeader>
-
         <CardContent class="p-4 pt-0 mt-auto">
           <button
             @click="addToCart(product)"
-            class="bg-blue-600 text-white py-2 px-4 rounded-xl w-full hover:bg-blue-700 transition">
+            class="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-4 rounded-xl w-full font-semibold shadow hover:from-blue-700 hover:to-blue-600 transition"
+          >
             Add to Cart
           </button>
         </CardContent>
