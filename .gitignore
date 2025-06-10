@@ -1,0 +1,31 @@
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/storage/pail
+/.phpunit.cache
+/.phpunit.result.cache
+.env
+.env.*
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Vite build output – ärge lisage Git'i!
+/public/build
+/public/hot
+
+# IDE ja tööriistade failid
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+
+# Debug / temp failid
+npm-debug.log
+yarn-error.log
+.phpactor.json
+
+database/database.sqlite

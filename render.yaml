@@ -1,0 +1,21 @@
+
+services:
+  - type: web
+    name: laravel-docker-app
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        sync: false
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/database/database.sqlite
+      - key: OPEN_WEATHER_MAP_KEY
+        sync: false
