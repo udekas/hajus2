@@ -1,41 +1,37 @@
-import: 
-  - recipe/laravel.php
+import:
+    - recipe/laravel.php
 
 config:
-  repository: 'git@github.com:udekas/hajus2.git'
-  keep_releases: 2
-
-
+    repository: 'git@github.com:udekas/hajus2.git'
+    keep_releases: 2
 
 hosts:
-  stage:
-    hostname: 'ta23udekull.itmajakas.ee'
-    http_user: virt123067
-    remote_user: virt123067
-    deploy_path: '~/domeenid/www.ta23udekull.itmajakas.ee/hajus'
-    identity_file: '~/.ssh/id_rsa'
-
+    stage:
+        hostname: 'ta23udekull.itmajakas.ee'
+        http_user: virt123067
+        remote_user: virt123067
+        deploy_path: '~/domeenid/www.ta23udekull.itmajakas.ee/hajus'
+        identity_file: '~/.ssh/id_rsa'
 
 tasks:
-  npm:production:
-    - run: 'cd {{release_path}} && npm ci'
-    - run: 'cd {{release_path}} && npx vite build'
+    npm:production:
+        - run: 'cd {{release_path}} && npm ci'
+        - run: 'cd {{release_path}} && npx vite build'
 
+    opcache:clear:
+        - run: killall php84-cgi || true
 
-  opcache:clear:
-    - run: killall php84-cgi || true
-
-  deploy:
-    - 'deploy:prepare'
-    - 'deploy:vendors'
-    - 'npm:production'
-    - 'artisan:storage:link'
-    # - 'artisan:optimize:clear'
-    # - 'artisan:optimize'
-    - 'deploy:publish'
+    deploy:
+        - 'deploy:prepare'
+        - 'deploy:vendors'
+        - 'npm:production'
+        - 'artisan:storage:link'
+        # - 'artisan:optimize:clear'
+        # - 'artisan:optimize'
+        - 'deploy:publish'
 
 after:
-  deploy:failed: deploy:unlock
+    deploy:failed: deploy:unlock
 
 before:
-  deploy:success: opcache:clear
+    deploy:success: opcache:clear
