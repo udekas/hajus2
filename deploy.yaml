@@ -2,7 +2,7 @@ import:
   - recipe/laravel.php
 
 config:
-  repository: 'git@github.com:araamat/mapsAPI.git'
+  repository: 'git@github.com:udekas/hajus2.git'
   keep_releases: 2
 
 
