@@ -32,7 +32,7 @@ const confirmDelete = ref(false);
 const selectedMarker = ref<{ id: number; name: string; description: string; latitude: number; longitude: number } | null>(null);
 const map = ref<RadarMap>();
 
-Radar.initialize('prj_test_pk_a4a4006fc00a17f9f08ec73995e78a0393b3c22f', {});
+Radar.initialize('prj_live_pk_581819a64edfdc6543371d189067bff15b1a6314', {});
 
 onMounted(() => {
     const radarMap = Radar.ui.map({
