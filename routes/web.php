@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Products
-Route::get('/products', [ProductController::class, 'index'])->middleware('auth')->name('products.indcex');
+Route::get('/products', [ProductController::class, 'index'])->middleware('auth')->name('products.index');
 
 // Cart
 Route::controller(CartController::class)
