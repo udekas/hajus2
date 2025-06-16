@@ -31,7 +31,17 @@ class CheckoutController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Your cart is empty.');
         }
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+$session = StripeSession::create([
+    'payment_method_types' => ['card'],
+    'line_items' => $lineItems,
+    'mode' => 'payment',
+    'customer_email' => $validated['email'],
+    'success_url' => config('services.stripe.success_url'),
+    'cancel_url' => config('services.stripe.cancel_url'),
+]);
+
 
         $lineItems = [];
 

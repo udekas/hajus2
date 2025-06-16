@@ -19,8 +19,12 @@ return [
     ],
     
 'stripe' => [
-        'key' => env('STRIPE_SECRET'),
-    ],
+    'secret' => env('STRIPE_SECRET'),
+    'public' => env('STRIPE_PUBLIC'),
+    'success_url' => env('STRIPE_SUCCESS_URL'),
+    'cancel_url' => env('STRIPE_CANCEL_URL'),
+],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
