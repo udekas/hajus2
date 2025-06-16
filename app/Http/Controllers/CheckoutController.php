@@ -31,7 +31,7 @@ class CheckoutController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Your cart is empty.');
         }
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe::setApiKey(config('services.stripe.public'));
 
         $lineItems = [];
 
