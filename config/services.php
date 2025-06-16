@@ -15,8 +15,13 @@ return [
     */
  'open_weather_map' => [
         'key' => env('WEATHER_API_KEY'),
+
     ],
     
+'stripe' => [
+        'key' => env('STRIPE_SECRET'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
