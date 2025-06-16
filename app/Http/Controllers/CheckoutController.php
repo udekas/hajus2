@@ -33,16 +33,6 @@ class CheckoutController extends Controller
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
-$session = StripeSession::create([
-    'payment_method_types' => ['card'],
-    'line_items' => $lineItems,
-    'mode' => 'payment',
-    'customer_email' => $validated['email'],
-    'success_url' => config('services.stripe.success_url'),
-    'cancel_url' => config('services.stripe.cancel_url'),
-]);
-
-
         $lineItems = [];
 
         foreach ($cart as $item) {
