@@ -15,7 +15,6 @@ class CheckoutController extends Controller
         return Inertia::render('Checkout');
     }
 
-    // Töötleb vormi ja käivitab makse
     public function process(Request $request)
     {
         $validated = $request->validate([
